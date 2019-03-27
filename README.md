@@ -1,2 +1,2 @@
 # theapicat
-mvp-clean-dagger
+mvp-clean architure-dagger-retrofit
