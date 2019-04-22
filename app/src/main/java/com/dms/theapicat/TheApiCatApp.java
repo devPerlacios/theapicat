@@ -1,18 +1,33 @@
 package com.dms.theapicat;
 
+import android.app.Application;
+
 import com.dms.theapicat.di.AppComponent;
 import com.dms.theapicat.di.DaggerAppComponent;
+import com.dms.theapicat.di.module.ApiModule;
+import com.dms.theapicat.di.module.ApplicationModule;
+import com.dms.theapicat.di.module.CategoryListActivityModule;
+import com.dms.theapicat.di.module.RoomModule;
 
-import dagger.android.AndroidInjector;
-import dagger.android.DaggerApplication;
 
-public class TheApiCatApp extends DaggerApplication {
+public class TheApiCatApp extends Application {
+
+    private AppComponent component;
 
     @Override
-    protected AndroidInjector<TheApiCatApp> applicationInjector() {
-        AppComponent appComponent = DaggerAppComponent.builder().application(this).build();
-        appComponent.inject(this);
-        return appComponent;
+    public void onCreate() {
+        super.onCreate();
+
+        component = DaggerAppComponent.builder()
+                .applicationModule(new ApplicationModule(this))
+                .apiModule(new ApiModule())
+                .categoryListActivityModule(new CategoryListActivityModule())
+                .roomModule(new RoomModule(this))
+                .build();
+    }
+
+    public AppComponent getComponent() {
+        return component;
     }
 
 }

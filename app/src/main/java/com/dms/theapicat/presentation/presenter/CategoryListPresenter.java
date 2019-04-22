@@ -2,11 +2,11 @@ package com.dms.theapicat.presentation.presenter;
 
 import android.util.Log;
 
-import com.dms.theapicat.domain.Handler;
-import com.dms.theapicat.domain.interactor.UseCase;
-import com.dms.theapicat.domain.interactor.UseCaseFactory;
-import com.dms.theapicat.domain.model.CategoryModel;
-import com.dms.theapicat.presentation.view.CategoryCellView;
+import com.dms.theapicat.domain.interactor.DefaultObserver;
+import com.dms.theapicat.domain.interactor.GetCategories;
+import com.dms.theapicat.domain.model.Category;
+import com.dms.theapicat.presentation.model.CategoryModel;
+import com.dms.theapicat.presentation.model.mapper.ModelMapper;
 import com.dms.theapicat.presentation.view.CategoryListView;
 import com.dms.theapicat.presentation.view.adapter.CategoryAdapter;
 
@@ -17,32 +17,21 @@ import javax.inject.Inject;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CategoryListPresenter implements Handler<List<CategoryModel>> {
+public class CategoryListPresenter {
 
+    private GetCategories getCategories;
     private WeakReference<CategoryListView> view;
-    private UseCaseFactory useCaseFactory;
     private List<CategoryModel> categoriesList;
+    private ModelMapper modelMapper;
 
     @Inject
-    public CategoryListPresenter(UseCaseFactory useCaseFactory) {
-        this.useCaseFactory = useCaseFactory;
+    public CategoryListPresenter(GetCategories getCategories, ModelMapper modelMapper) {
+        this.getCategories = getCategories;
+        this.modelMapper = modelMapper;
     }
 
     public void setView(CategoryListView view){
-        this.view = new WeakReference<>(view);;
-    }
-
-    public void viewReady(){
-        invokeUseCase();
-    }
-
-    public void refresh(){
-        invokeUseCase();
-    }
-
-    private void invokeUseCase(){
-        UseCase useCase = useCaseFactory.getCategories();
-        useCase.execute(this, null);
+        this.view = new WeakReference<>(view);
     }
 
     public int getItemsCount(){
@@ -51,6 +40,10 @@ public class CategoryListPresenter implements Handler<List<CategoryModel>> {
         } else{
             return categoriesList.size();
         }
+    }
+
+    public void initialize(){
+        this.getCategories.execute(new CategoryListObserver(), null);
     }
 
     public void configureCell(RecyclerView.ViewHolder viewHolder, int position){
@@ -68,27 +61,37 @@ public class CategoryListPresenter implements Handler<List<CategoryModel>> {
         return categoriesList.get(position);
     }
 
-    @Override
-    public void handle(List<CategoryModel> result) {
-        saveMovies(result);
-        CategoryListView movieListView = view.get();
-        if(movieListView!=null){
-            movieListView.cancelRefreshDialog();
-            movieListView.refreshList();
-        }
-    }
 
-    @Override
-    public void error(Exception exception) {
-        CategoryListView movieListView = view.get();
-        if(movieListView!=null){
-            movieListView.cancelRefreshDialog();
-            movieListView.showErrorMessage(exception.getMessage());
-        }
-    }
-
-    public void saveMovies(List<CategoryModel> movieList){
+    public void saveCategories(List<CategoryModel> movieList){
         this.categoriesList = movieList;
+        this.view.get().renderListCategory();
+    }
+
+    private void showErrorMessage(String errorMessage) {
+        this.view.get().showError(errorMessage);
+    }
+
+    private final class CategoryListObserver extends DefaultObserver<List<Category>> {
+
+        @Override
+        public void onComplete() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            e.printStackTrace();
+            CategoryListPresenter.this.showErrorMessage(e.getLocalizedMessage());
+        }
+
+        @Override
+        public void onNext(List<Category> list) {
+            CategoryListPresenter.this.saveCategories(modelMapper.transform(list));
+        }
+    }
+
+    public void destroy() {
+        this.getCategories.dispose();
+        this.view = null;
     }
 
     public List<CategoryModel> getCategoriesList() {
@@ -98,4 +101,5 @@ public class CategoryListPresenter implements Handler<List<CategoryModel>> {
     public void setCategoriesList(List<CategoryModel> categoriesList) {
         this.categoriesList = categoriesList;
     }
+
 }

@@ -1,8 +1,10 @@
 package com.dms.theapicat.presentation.view.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import com.dms.theapicat.R;
+import com.dms.theapicat.TheApiCatApp;
 import com.dms.theapicat.presentation.presenter.CategoryListPresenter;
 import com.dms.theapicat.presentation.view.BaseActivity;
 import com.dms.theapicat.presentation.view.CategoryListView;
@@ -30,8 +32,10 @@ public class CategoryListActivity extends BaseActivity implements CategoryListVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bindViews();
+        ((TheApiCatApp) getApplication()).getComponent().inject(this);
         setUpRecyclerView();
-        presenter.viewReady();
+        presenter.setView(this);
+        presenter.initialize();
     }
 
     public void bindViews(){
@@ -47,12 +51,33 @@ public class CategoryListActivity extends BaseActivity implements CategoryListVi
     }
 
     @Override
-    public void refreshList() {
-        adapter.refreshData();
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.destroy();
     }
 
     @Override
-    public void cancelRefreshDialog() {
+    public void renderListCategory() {
+        adapter.notifyDataSetChanged();
+    }
 
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showError(String errorMessage) {
+
+    }
+
+    @Override
+    public Context context() {
+        return this;
     }
 }

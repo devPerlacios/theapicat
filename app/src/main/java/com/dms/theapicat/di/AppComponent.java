@@ -2,28 +2,24 @@ package com.dms.theapicat.di;
 
 import android.app.Application;
 import com.dms.theapicat.TheApiCatApp;
-import com.dms.theapicat.di.module.ApiCatModule;
-import com.dms.theapicat.di.module.AppModule;
+import com.dms.theapicat.di.module.ApiModule;
+import com.dms.theapicat.di.module.ApplicationModule;
+import com.dms.theapicat.di.module.CategoryListActivityModule;
+import com.dms.theapicat.di.module.RoomModule;
+import com.dms.theapicat.presentation.view.activity.CategoryListActivity;
+
 import javax.inject.Singleton;
 import dagger.BindsInstance;
 import dagger.Component;
-import dagger.android.AndroidInjector;
-import dagger.android.support.AndroidSupportInjectionModule;
 
 @Singleton
 @Component(modules = {
-        AndroidSupportInjectionModule.class,
-        AppModule.class,
-        ApiCatModule.class,
-        ActivityBuilder.class})
-public interface AppComponent extends AndroidInjector<TheApiCatApp> {
+        ApplicationModule.class,
+        ApiModule.class,
+        RoomModule.class,
+        CategoryListActivityModule.class
+})
+public interface AppComponent {
 
-    @Component.Builder
-    interface Builder {
-        @BindsInstance
-        Builder application(Application application);
-        AppComponent build();
-    }
-
-    void inject(TheApiCatApp app);
+    void inject(CategoryListActivity target);
 }

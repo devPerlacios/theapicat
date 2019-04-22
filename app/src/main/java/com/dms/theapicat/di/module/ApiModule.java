@@ -1,6 +1,6 @@
 package com.dms.theapicat.di.module;
 
-import com.dms.theapicat.data.source.remote.CatService;
+import com.dms.theapicat.data.api.CatServices;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -26,9 +26,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
-public class ApiCatModule {
+public class ApiModule {
 
-    private static final String TAG = ApiCatModule.class.getName();
+    private static final String TAG = ApiModule.class.getName();
 
     public final String BASE_URL = "https://api.thecatapi.com/";
 
@@ -54,10 +54,10 @@ public class ApiCatModule {
 
     @Provides
     @Singleton
-    public CatService provideCatService(){
+    public CatServices provideCatService(){
         return provideRetrofit(BASE_URL,
                 providerHttpClient())
-                .create(CatService.class);
+                .create(CatServices.class);
     }
 
     public Gson getGson(){

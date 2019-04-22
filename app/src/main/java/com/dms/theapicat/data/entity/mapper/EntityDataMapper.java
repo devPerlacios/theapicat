@@ -1,7 +1,7 @@
 package com.dms.theapicat.data.entity.mapper;
 
 import com.dms.theapicat.data.entity.CategoryEntity;
-import com.dms.theapicat.domain.model.CategoryModel;
+import com.dms.theapicat.domain.model.Category;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,16 +16,16 @@ public class EntityDataMapper {
     public EntityDataMapper() {
     }
 
-    public CategoryModel transform(CategoryEntity categoryEntity){
-        CategoryModel categoryModel = null;
+    public Category transform(CategoryEntity categoryEntity){
+        Category categoryModel = null;
         if(categoryEntity !=null){
-            categoryModel = new CategoryModel(categoryEntity.getId(), categoryEntity.getName());
+            categoryModel = new Category(categoryEntity.getId(), categoryEntity.getName());
         }
         return categoryModel;
     }
 
-    public List<CategoryModel> transform(List<CategoryEntity> categories){
-        List<CategoryModel> categoryModels = new ArrayList<>();
+    public List<Category> transform(List<CategoryEntity> categories){
+        List<Category> categoryModels = new ArrayList<>();
         if(categories!=null){
             for(CategoryEntity categoryEntity : categories){
                 if(categoryEntity !=null){

@@ -5,9 +5,9 @@ import android.content.DialogInterface;
 import com.dms.theapicat.R;
 
 import androidx.appcompat.app.AlertDialog;
-import dagger.android.support.DaggerAppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
-public abstract class BaseActivity extends DaggerAppCompatActivity implements BaseView {
+public abstract class BaseActivity extends AppCompatActivity implements BaseView {
 
     @Override
     public void showErrorMessage(String message) {

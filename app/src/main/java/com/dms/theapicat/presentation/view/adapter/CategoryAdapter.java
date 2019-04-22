@@ -6,8 +6,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dms.theapicat.R;
+import com.dms.theapicat.presentation.model.CategoryModel;
 import com.dms.theapicat.presentation.presenter.CategoryListPresenter;
 import com.dms.theapicat.presentation.view.CategoryCellView;
+
+import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -52,10 +55,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return EMPTY_VIEW_TYPE;
         }
         return super.getItemViewType(position);
-    }
-
-    public void refreshData(){
-        notifyDataSetChanged();
     }
 
     public class EmptyViewHolder extends RecyclerView.ViewHolder {
