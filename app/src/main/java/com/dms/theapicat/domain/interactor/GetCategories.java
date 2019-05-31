@@ -1,7 +1,7 @@
 package com.dms.theapicat.domain.interactor;
 
-import com.dms.theapicat.domain.model.Category;
-import com.dms.theapicat.domain.repository.CategoriesRepository;
+import com.dms.theapicat.data.Category;
+import com.dms.theapicat.data.source.CategoriesRepository;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class GetCategories extends UseCase<List<Category>, Void> {
 
     @Override
     Observable<List<Category>> buildUseCaseObservable(Void aVoid) {
-        return repository.getListCategory();
+        return repository.getCategories();
     }
 
 }

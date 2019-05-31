@@ -3,16 +3,16 @@ package com.dms.theapicat.di.module;
 import android.app.Application;
 import android.content.Context;
 
-import com.dms.theapicat.data.db.dao.CategoriesDao;
-import com.dms.theapicat.data.entity.mapper.EntityDataMapper;
-import com.dms.theapicat.data.repository.CategoriesRepositoryImpl;
-import com.dms.theapicat.data.api.CatServices;
-import com.dms.theapicat.data.repository.datasource.local.CategoriesLocalSource;
-import com.dms.theapicat.data.repository.datasource.local.CategoriesLocalSourceImpl;
-import com.dms.theapicat.data.repository.datasource.remote.CategoriesRemoteSource;
-import com.dms.theapicat.data.repository.datasource.remote.CategoriesRemoteSourceImpl;
-import com.dms.theapicat.domain.repository.CategoriesRepository;
+import com.dms.theapicat.data.source.CategoriesDataSource;
+import com.dms.theapicat.data.source.CategoriesRepository;
+import com.dms.theapicat.data.source.Local;
+import com.dms.theapicat.data.source.Remote;
+import com.dms.theapicat.data.source.local.CategoriesDao;
+import com.dms.theapicat.data.source.local.CategoriesLocalDataSource;
+import com.dms.theapicat.data.source.remote.CatServices;
+import com.dms.theapicat.data.source.remote.CategoriesRemoteDataSource;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -34,20 +34,21 @@ public class ApplicationModule {
     }
 
     @Provides
-    CategoriesLocalSource provideCategoriesLocalSource(CategoriesDao categoriesDao){
-        return new CategoriesLocalSourceImpl(categoriesDao);
+    @Local
+    CategoriesDataSource provideCategoriesLocalSource(CategoriesDao categoriesDao){
+        return new CategoriesLocalDataSource(categoriesDao);
     }
 
     @Provides
-    CategoriesRemoteSource provideRemoteDataSource(CatServices catService) {
-        return new CategoriesRemoteSourceImpl(catService);
+    @Remote
+    CategoriesDataSource provideRemoteDataSource(CatServices catService) {
+        return new CategoriesRemoteDataSource(catService);
     }
 
     @Provides
-    CategoriesRepository provideCategoriesRepository(CategoriesRemoteSource categoriesRemoteDataSource,
-                                                   CategoriesLocalSource categoriesLocalSource,
-                                                   EntityDataMapper entityDataMapper) {
-        return new CategoriesRepositoryImpl(categoriesRemoteDataSource, categoriesLocalSource, entityDataMapper);
+    CategoriesRepository provideCategoriesRepository(@Remote CategoriesDataSource categoriesRemoteDataSource,
+                                                     @Local CategoriesDataSource categoriesLocalSource) {
+        return new CategoriesRepository(categoriesRemoteDataSource, categoriesLocalSource);
     }
 
 }

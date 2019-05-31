@@ -2,12 +2,9 @@ package com.dms.theapicat.di.module;
 
 import android.app.Application;
 
-import com.dms.theapicat.data.db.AppDatabase;
-import com.dms.theapicat.data.db.dao.CategoriesDao;
-import com.dms.theapicat.data.repository.datasource.local.CategoriesLocalSource;
-import com.dms.theapicat.data.repository.datasource.local.CategoriesLocalSourceImpl;
-
-import java.util.concurrent.Executor;
+import com.dms.theapicat.data.source.local.AppDatabase;
+import com.dms.theapicat.data.source.local.CategoriesDao;
+import com.dms.theapicat.util.Constans;
 
 import androidx.room.Room;
 import dagger.Module;
@@ -25,7 +22,7 @@ public class RoomModule {
     private AppDatabase mAppDatabase;
 
     public RoomModule(Application application) {
-        this.mAppDatabase = Room.databaseBuilder(application, AppDatabase.class, "demo_db")
+        this.mAppDatabase = Room.databaseBuilder(application, AppDatabase.class, Constans.NAME_DATABASE)
                  /*.addMigrations(MIGRATION_1_2) -- in case of migration*/
                 .build();
     }

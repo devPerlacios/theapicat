@@ -1,15 +1,13 @@
 package com.dms.theapicat.di;
 
-import android.app.Application;
-import com.dms.theapicat.TheApiCatApp;
 import com.dms.theapicat.di.module.ApiModule;
 import com.dms.theapicat.di.module.ApplicationModule;
 import com.dms.theapicat.di.module.CategoryListActivityModule;
 import com.dms.theapicat.di.module.RoomModule;
-import com.dms.theapicat.presentation.view.activity.CategoryListActivity;
+import com.dms.theapicat.presentation.view.categories.CategoriesActivity;
 
 import javax.inject.Singleton;
-import dagger.BindsInstance;
+
 import dagger.Component;
 
 @Singleton
@@ -21,5 +19,6 @@ import dagger.Component;
 })
 public interface AppComponent {
 
-    void inject(CategoryListActivity target);
+    void inject(CategoriesActivity target);
+
 }

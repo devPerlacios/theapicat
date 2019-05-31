@@ -1,6 +1,6 @@
 package com.dms.theapicat.di.module;
 
-import com.dms.theapicat.data.api.CatServices;
+import com.dms.theapicat.data.source.remote.CatServices;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;

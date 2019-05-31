@@ -1,10 +1,8 @@
 package com.dms.theapicat.di.module;
 
+import com.dms.theapicat.data.source.CategoriesRepository;
 import com.dms.theapicat.domain.interactor.GetCategories;
-import com.dms.theapicat.domain.repository.CategoriesRepository;
-import com.dms.theapicat.presentation.model.mapper.ModelMapper;
-import com.dms.theapicat.presentation.presenter.CategoryListPresenter;
-import com.dms.theapicat.presentation.view.activity.CategoryListActivity;
+import com.dms.theapicat.presentation.presenter.CategoriesPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -19,8 +17,8 @@ public class CategoryListActivityModule {
     }
 
     @Provides
-    CategoryListPresenter providePresenter(GetCategories getCategories, ModelMapper modelMapper){
-        return new CategoryListPresenter(getCategories,modelMapper);
+    CategoriesPresenter providePresenter(GetCategories getCategories){
+        return new CategoriesPresenter(getCategories);
     }
 
 }
